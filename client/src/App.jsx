@@ -7,6 +7,7 @@ import ReservationsManager from './components/ReservationsManager';
 function App() {
   const [view, setView] = useState('home');
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +26,7 @@ function App() {
 
   const handleNavClick = (id) => {
     setView(id);
+    setMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -48,7 +50,19 @@ function App() {
             Cabornera<span>.</span>
           </button>
 
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+          {/* Hamburger button - visible on mobile */}
+          <button
+            className={`hamburger-btn ${menuOpen ? 'open' : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Menu"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+
+          {/* Nav links */}
+          <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
             {navItems.map(item => (
               <button
                 key={item.id}
@@ -60,6 +74,12 @@ function App() {
             ))}
           </div>
         </div>
+
+        {/* Mobile overlay */}
+        <div
+          className={`mobile-overlay ${menuOpen ? 'active' : ''}`}
+          onClick={() => setMenuOpen(false)}
+        />
       </nav>
 
       {/* ===== HERO (HOME) ===== */}
@@ -272,12 +292,7 @@ function App() {
           maxWidth: '1280px',
           margin: '0 auto'
         }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '4rem',
-            alignItems: 'center'
-          }}>
+          <div className="culinary-grid">
             {/* Left — Text content */}
             <div className="animate-fade-in-up">
               <h2 style={{
@@ -426,13 +441,9 @@ function App() {
           padding: '4rem 2rem',
           color: 'white'
         }}>
-          <div style={{
+          <div className="stats-grid" style={{
             maxWidth: '1000px',
-            margin: '0 auto',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '2rem',
-            textAlign: 'center'
+            margin: '0 auto'
           }}>
             {[
               { number: '1.000m', label: 'Altitud sobre el nivel del mar' },
@@ -462,13 +473,10 @@ function App() {
       {/* ===== FOOTER (HOME) ===== */}
       {view === 'home' && (
         <footer className="footer">
-          <div style={{
+          <div className="footer-grid" style={{
             maxWidth: '1280px',
             margin: '0 auto',
-            padding: '0 2rem',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-            gap: '2rem'
+            padding: '0 2rem'
           }}>
             <div>
               <h3 style={{
